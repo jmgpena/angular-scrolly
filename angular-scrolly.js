@@ -753,7 +753,7 @@ angular.module('ajoslin.scrolly.scroller', [
       self.calculateHeight = function() {
         var rect = $scroller.getContentRect(raw);
         //TODO find a better way to get the height of the wrapper/screen
-        var screenHeight = elm.parent()[0].innerHeight || $window.innerHeight;
+        var screenHeight = elm.parent()[0].clientHeight || $window.innerHeight;
         //If our content doesn't fill the whole area, just act like it's
         //exactly one screen tall for scrolling purposes
         if (rect.height < screenHeight) {
