@@ -9,7 +9,7 @@
  * @ngdoc module
  * @name ajoslin.scrolly
  * @description
- * 
+ *
  * 'ajoslin.scrolly' Is the one module that includes all of the others.
  */
 angular.module('ajoslin.scrolly', [
@@ -76,7 +76,7 @@ angular.module('ajoslin.scrolly.desktop', [])
 
 .provider('$desktopScroller', [function() {
 
-  var KEYS = { 
+  var KEYS = {
     38: 150, //up arrow -> up
     40: -150, //down arrow -> down
     32: -600 //spacebar -> down
@@ -98,7 +98,7 @@ angular.module('ajoslin.scrolly.desktop', [])
 
     $desktopScroller.mouseWheelDistanceMulti = _mouseWheelDistanceMulti;
     $desktopScroller.easeTimeMulti = 0.66;
-    
+
     function $desktopScroller(elm, scroller) {
       var self = {};
 
@@ -177,7 +177,7 @@ angular.module('ajoslin.scrolly.desktop', [])
  * @name ajoslin.scrolly.$draggerProvider
  *
  * @description
-  Used for configuring drag options. 
+  Used for configuring drag options.
  *
  */
 
@@ -188,11 +188,11 @@ angular.module('ajoslin.scrolly.dragger', [])
    * @ngdoc method
    * @name ajoslin.scrolly.$draggerProvider#shouldBlurOnTouch
    * @methodOf ajoslin.scrolly.$draggerProvider
-   * 
+   *
    * @description
    * Sets/gets whether any active element should be blurred when the user touches and starts dragging.
    * If there is an active element and then the user does dragging, some
-   * major visual problems with the position of the cursor occur. 
+   * major visual problems with the position of the cursor occur.
    *
    * Defaults to true.
    *
@@ -229,7 +229,7 @@ angular.module('ajoslin.scrolly.dragger', [])
    * @methodOf ajoslin.scrolly.$draggerProvider
    *
    * @description
-   * Sets/gets the maximum time a user can be motionless, in milliseconds, before 
+   * Sets/gets the maximum time a user can be motionless, in milliseconds, before
    * the user is counted as 'not actively dragging' anymore.
    *
    * @param {number=} newTime Sets the maximum time, milliseconds.
@@ -274,7 +274,7 @@ angular.module('ajoslin.scrolly.dragger', [])
      * @name ajoslin.scrolly.$dragger
      *
      * @description
-     * A factory for creating drag-listeners on elements. 
+     * A factory for creating drag-listeners on elements.
      *
      * @param {element} element Element to attach drag listeners to.
      * @param {object=} options Options object. Able to have the following properties:
@@ -288,8 +288,8 @@ angular.module('ajoslin.scrolly.dragger', [])
      *   - `{void}` `removeListener({constant=} dragDirection, {function} callback)` Removes the given callback from the list of listeners. Default direction: DIRECTION_ANY.
      *   - Allowed directions are constants on $dragger: `$dragger.DIRECTION_HORIZONTAL`, `$dragger.DIRECTION_VERTICAL`, `$dragger.DIRECTION_ANY`.
      *
-     * The `callback` given to addListener is called whenever a `start`, 
-     * `move`, or `end` drag event happens.  An event will only be dispatched if the `dragDirection` given matches the direction of the drag, or if the `dragDirection` given is `DIRECTION_ANY`. 
+     * The `callback` given to addListener is called whenever a `start`,
+     * `move`, or `end` drag event happens.  An event will only be dispatched if the `dragDirection` given matches the direction of the drag, or if the `dragDirection` given is `DIRECTION_ANY`.
      *
      * The callback given to `addListener` takes the following parameters:
      *
@@ -344,7 +344,7 @@ angular.module('ajoslin.scrolly.dragger', [])
       listeners[DIRECTION_ANY] = [];
 
       var currentDragger = elm.data('$scrolly.dragger');
-      if (currentDragger) { 
+      if (currentDragger) {
         return currentDragger;
       } else {
         elm.data('$scrolly.dragger', self);
@@ -460,12 +460,12 @@ angular.module('ajoslin.scrolly.dragger', [])
           self.state = {};
         }
       }
-      
+
       function dispatchEvent(eventType, force) {
         var data = copy(self.state); // don't want to give them exact same data
         forEach(listeners, function(callbacks, listenerDirection) {
           /* jshint eqeqeq: false */
-          if (force || !data.direction || data.direction == listenerDirection || 
+          if (force || !data.direction || data.direction == listenerDirection ||
               listenerDirection == DIRECTION_ANY) {
             forEach(callbacks, function(cb) {
               cb(eventType, data);
@@ -508,7 +508,7 @@ angular.module('ajoslin.scrolly.dragger', [])
         state.pos = {x: point.x, y: point.y};
         state.updatedAt = Date.now();
       }
-      
+
       function distanceBetween(p2, p1) {
         var dist = {
           x: p2.x - p1.x,
@@ -520,7 +520,7 @@ angular.module('ajoslin.scrolly.dragger', [])
 
       function isInput(raw) {
         return raw && (raw.tagName === "INPUT" ||
-          raw.tagName === "SELECT" || 
+          raw.tagName === "SELECT" ||
           raw.tagName === "TEXTAREA");
       }
 
@@ -536,7 +536,7 @@ angular.module('ajoslin.scrolly.dragger', [])
 /**
  * @ngdoc object
  * @name ajoslin.scrolly.$scrollerProvider
- * 
+ *
  * @description
  * Used for configuring scroll options.
  */
@@ -560,7 +560,7 @@ angular.module('ajoslin.scrolly.scroller', [
    * @methodOf ajoslin.scrolly.$scrollerProvider
    *
    * @description
-   * Sets/gets whether the scroller should support desktop events (mousewheel, 
+   * Sets/gets whether the scroller should support desktop events (mousewheel,
    * arrow keys, etc).  Default true.
    *
    * @param {boolean=} newSupport New value to set for desktop support.
@@ -622,7 +622,10 @@ angular.module('ajoslin.scrolly.scroller', [
    * @param {number=} newBounceBuffer The new bounce buffer to set.
    * @returns {number} bounceBuffer The current bounce buffer.
    */
-  var _bounceBuffer = 40;
+  // UPDATE: reset to 0 to fix a bug on the LC Mobile Promotions app
+  // force the content to scroll to the minimum/maximum y value of its container
+  // this update won't disable the bouncing effect
+  var _bounceBuffer = 0;
   this.bounceBuffer = function(newBounceBuffer) {
     arguments.length && (_bounceBuffer = newBounceBuffer);
     return _bounceBuffer;
@@ -647,10 +650,10 @@ angular.module('ajoslin.scrolly.scroller', [
    * @methodOf ajoslin.scrolly.$scrollerProvider
    *
    * @description
-   * When the user scrolls past the content area into the bounce buffer, 
+   * When the user scrolls past the content area into the bounce buffer,
    * we need to bounce back.  To decide how long the bounce back animation will
-   * take, there are two factors: a minimum time, in milliseconds, and a 
-   * distance multiplier.  
+   * take, there are two factors: a minimum time, in milliseconds, and a
+   * distance multiplier.
    *
    * The equation for deciding how much time the animation to bounce back to
    * the main content area should take, we do the following:
@@ -663,7 +666,7 @@ angular.module('ajoslin.scrolly.scroller', [
    *
    * This makes it so the farther away the user has scrolled from the content
    * area, the longer the animation to bring the content back into view will
-   * take. The minimum time exists so even short distances still take a little 
+   * take. The minimum time exists so even short distances still take a little
    * bit of time.
    *
    * @param {number=} newDistanceMulti The new bounce back distance multiplier.
@@ -708,7 +711,7 @@ angular.module('ajoslin.scrolly.scroller', [
 
 
     function bounceTime(howMuchOut) {
-      return Math.abs(howMuchOut) * _bounceBackDistanceMulti + 
+      return Math.abs(howMuchOut) * _bounceBackDistanceMulti +
         _bounceBackMinTime;
     }
 
@@ -719,7 +722,7 @@ angular.module('ajoslin.scrolly.scroller', [
      * @description
      * A factory for creating a scroll-manipulator on an element. Once called
      * on an element, it will listen to drag events and use those to change
-     * the element's transform appropriately to simulate scrolling. 
+     * the element's transform appropriately to simulate scrolling.
      * Intended to look as close as possible to native iOS scrolling.
      *
      * @param {element} element Element to attach scroller to.
@@ -815,7 +818,7 @@ angular.module('ajoslin.scrolly.scroller', [
         if (howMuchOut) {
           var newPosition = howMuchOut > 0 ? 0 : -self.scrollHeight;
           transformer.easeTo({y: newPosition}, bounceTime(howMuchOut));
-        } 
+        }
       };
       self.momentum = function(dragData) {
         self.calculateHeight();
@@ -855,17 +858,17 @@ angular.module('ajoslin.scrolly.scroller', [
 /**
  * @ngdoc object
  * @name ajoslin.scrolly.$transformerProvider
- * 
+ *
  * @description
- * Used for configuring transformer options.  
+ * Used for configuring transformer options.
  */
 angular.module('ajoslin.scrolly.transformer', [])
 
 /**
  * @ngdoc object
  * @name ajoslin.scrolly.$nextFrame
- * 
- * @description 
+ *
+ * @description
  * A service to wrap {@link https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame window.requestAnimationFrame}, or a fallback if it is not available.
  *
  * The main reason this is in a service is for ease of mocking it during tests.
@@ -876,11 +879,11 @@ angular.module('ajoslin.scrolly.transformer', [])
 
 .factory('$nextFrame', ['$window', function($window) {
   //Polyfill for requestAnimationFrame
-  return $window.requestAnimationFrame || 
-    $window.webkitRequestAnimationFrame || 
-    $window.mozRequestAnimationFrame || 
-    function fallback(cb) { 
-      return $window.setTimeout(cb, 17); 
+  return $window.requestAnimationFrame ||
+    $window.webkitRequestAnimationFrame ||
+    $window.mozRequestAnimationFrame ||
+    function fallback(cb) {
+      return $window.setTimeout(cb, 17);
     };
 }])
 
@@ -890,7 +893,7 @@ angular.module('ajoslin.scrolly.transformer', [])
    * @ngdoc method
    * @name ajoslin.scrolly.$transformerProvider#timingFunction
    * @methodOf ajoslin.scrolly.$transformerProvider
-   * 
+   *
    * @description
    * Sets/gets the CSS timing function used for transform-transitions. For example "ease-in-out".
    *
@@ -1006,7 +1009,7 @@ angular.module('ajoslin.scrolly.transformer', [])
           throw new Error("Expected a positive number for time, got '" +
             transitionTime + "'.");
         }
-        //If we're currently animating, we need to stop before we try to 
+        //If we're currently animating, we need to stop before we try to
         //animate differently.
         if (self.changing) {
           self.stop(doTransition);
@@ -1057,7 +1060,7 @@ angular.module('ajoslin.scrolly.transformer', [])
      * @name ajoslin.scrolly.$transformer#transformPropDash
      * @propertyOf ajoslin.scrolly.$transformer
      *
-     * @description {string} The property used for element transformations, "dashed version". For example "-webkit-transform". 
+     * @description {string} The property used for element transformations, "dashed version". For example "-webkit-transform".
      */
 
     $transformer.transformPropDash = transformPropDash;
